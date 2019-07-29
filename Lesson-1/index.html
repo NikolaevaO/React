@@ -92,7 +92,7 @@
       findDevIndex(developer) {
         return this.developers.findIndex(element => {
           for (let prop in element) {
-            if (element.prop !== developer.prop) {
+            if (element[prop] !== developer[prop]) {
               return false;
             }
           }
@@ -111,6 +111,7 @@
         let devIndex = this.findDevIndex(developer);
         if (devIndex >= 0) {
           this.developers.splice(devIndex, 1);
+          developer.changeManager(null);
         };
       };
 
@@ -131,12 +132,15 @@
             this.manager.deleteDeveloper(this);
           }
           this.manager = manager;
-          manager.addDeveloper(this);
+          if (manager) {
+            manager.addDeveloper(this);
+          }
         }
       };
 
       sayHi() {
-        console.log(`Hi, I'm developer ${this.displayInfo()}. I work for ${this.manager.name}`);
+        name = this.manager ? this.manager.name : "myself";
+        console.log(`Hi, I'm developer ${this.displayInfo()}. I work for ${name}`);
       }
     };
 
@@ -158,6 +162,11 @@
     developer2.sayHi();
     manager1.sayHi();
     manager2.sayHi();
+    manager1.deleteDeveloper(developer1);
+    console.log("Developer1 has gone")
+    manager1.sayHi();
+    developer1.sayHi();
+    developer2.sayHi();
   </script>
 </body>
 </html>
