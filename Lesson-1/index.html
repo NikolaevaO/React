@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Lesson-1</title>
+</head>
+<body>
+  <script type="text/javascript">
+    // № 1
+    // Написать функцию loop, которая будет принимать параметры: times (значение по умолчанию = 0), 
+ 		// callback (значение по умолчанию = null) и будет в цикле (times раз), вызывать функцию callback. 
+ 		// Если функция не передана, то цикл не должен отрабатывать ни разу.
+    // Покажите применение этой функции
+    let loop = (times=0, callback=null) => {
+  			if (typeof(callback) === "function") {
+    			for (let i=0; i<times; i++) {
+    	  		callback()
+    	  		}
+    		};
+        return x;
+    };
+    let x=0;
+    console.log (loop(20, 50));
+    console.log (loop(5, function add (){return ++x}));
+    
+
+
+    // № 2
+    // Написать функцию calculateArea, которая будет принимать параметры, для вычисления площади
+    // (можете выбрать какую то конкретную фигуру, а можете, основываясь на переданных параметрах,
+    // выполнять требуемый алгоритм вычисления площади для переданной в параметрах фигуры)
+    // и возвращать объект вида: { area, figure, input }, где area - вычисленная площадь,
+    // figure - название фигуры, для которой вычислялась площадь, input - входные параметры,
+    // по которым было произведено вычисление.
+    let calculateArea = radius => {
+      return {
+        area: Math.PI * Math.pow(radius, 2),
+        figure: "circle",
+        input: radius
+        };
+    };
+    console.log (calculateArea(3.5));
+
+
+
+  // № 3
+  // Human -> Employee -> Developer
+  // Human -> Employee -> Manager
+  // Каждый Менеджер (Manager) должен иметь внутренний массив своих сотрудников (разработчиков), а также методы по удалению/добавлению разработчиков.
+  // Каждый Разработчик (Developer) должны иметь ссылку на Менеджера и методы для изменения менеджера (имеется ввиду возможность
+  // назначить другого менеджера).
+  // У класса Human должны быть следующие параметры: name (строка), age (число), dateOfBirth (строка или дата)
+  // У класса Employee должны присутствовать параметры: salary (число), department (строка)
+  // В классе Human должен присутствовать метод displayInfo, который возвращает строку со всеми параметрами экземпляра Human.
+  // В классе Employee должен быть реализовать такой же метод (displayInfo),
+  // который вызывает базовый метод и дополняет его параметрами из экземпляра Employee
+  // Чтобы вызвать метод базового класса, необходимо внутри вызова метода displayInfo класса Employee написать: super.displayInfo(),
+  // это вызовет метод disaplyInfo класс Human и вернет строку с параметрами Human'a.
+
+    class Human {
+      constructor (name, age, dateOfBirth) {
+        this.name = name;
+        this.age = age;
+        this.dateOfBirth = dateOfBirth;
+      };
+      displayInfo () {
+        return `name = ${this.name}, age = ${this.age}, dateOfBirth = ${this.dateOfBirth}`
+      };
+    };
+
+    
+    class Employee extends Human {
+      constructor (name, age, dateOfBirth, salary, department) {
+        super(name, age, dateOfBirth);
+        this.salary = salary;
+        this.department = department;
+      };
+      displayInfo () {
+        return super.displayInfo() + `, salary = ${this.salary}, department = ${this.department}`;
+      };
+    };
+
+
+    class Manager extends Employee {
+			constructor(name, age, dateOfBirth, salary, department) {
+		    super(name, age, dateOfBirth, salary, department);
+		    this.developers = [];
+		  };
+
+      findDevIndex(developer) {
+        return this.developers.findIndex(element => {
+          for (let prop in element) {
+            if (element[prop] !== developer[prop]) {
+              return false;
+            }
+          }
+          return true;
+        });
+      };
+
+      addDeveloper(developer) {
+        if (!this.developers.includes(developer)) {  
+  				this.developers.push(developer);
+          developer.changeManager(this);
+        }
+			};
+
+      deleteDeveloper(developer) {
+        let devIndex = this.findDevIndex(developer);
+        if (devIndex >= 0) {
+          this.developers.splice(devIndex, 1);
+          developer.changeManager(null);
+        };
+      };
+
+      sayHi() {
+        console.log(`Hi, I'm manager ${this.displayInfo()}. My guys are ${this.developers.map(elem => elem.name)}`);
+      }
+    };
+
+    class Developer extends Employee {
+      constructor(name, age, dateOfBirth, salary, department) {
+        super(name, age, dateOfBirth, salary, department);
+        this.manager = null;
+      };
+
+      changeManager(manager) {
+        if (this.manager != manager) {
+          if (this.manager) {
+            this.manager.deleteDeveloper(this);
+          }
+          this.manager = manager;
+          if (manager) {
+            manager.addDeveloper(this);
+          }
+        }
+      };
+
+      sayHi() {
+        name = this.manager ? this.manager.name : "myself";
+        console.log(`Hi, I'm developer ${this.displayInfo()}. I work for ${name}`);
+      }
+    };
+
+
+    let manager1 = new Manager("John", 30, "11/02/1989", 100000, "front-end");
+    let developer1 = new Developer("Mike", 25, "20/01/1994", 50000, "front-end");
+    developer1.changeManager(manager1);
+    manager1.sayHi();
+    developer1.sayHi();
+
+    let manager2 = new Manager("Rick", 33, "11/02/1986", 101000, "front-end");
+    let developer2 = new Developer("Dave", 22, "25/08/1997", 60000, "front-end");
+    manager2.addDeveloper(developer2);
+    manager2.sayHi();
+    developer2.sayHi();
+
+    developer2.changeManager(manager1);
+    console.log("Developer2 changed his manager:");
+    developer2.sayHi();
+    manager1.sayHi();
+    manager2.sayHi();
+    manager1.deleteDeveloper(developer1);
+    console.log("Developer1 has gone")
+    manager1.sayHi();
+    developer1.sayHi();
+    developer2.sayHi();
+  </script>
+</body>
+</html>
