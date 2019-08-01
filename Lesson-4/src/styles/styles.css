@@ -1,0 +1,31 @@
+#root {
+  position: relative;
+  margin: 20px;
+}
+
+.modal {
+  position: absolute;
+  display: block;
+  background-color: rgb(250, 237, 220);
+  width: 20%;
+  height: 40%;
+  border: 1px solid grey;
+  text-align: center;
+  top: 0;
+  left: 35%;
+}
+
+.modal h2 {
+  padding-top: 45px;
+}
+
+.modal button {
+  margin-top: 10%;
+  cursor: pointer;
+}
+
+.blog > div {
+  padding: 10px 25px;
+  border: 1px solid rgb(182, 180, 180);
+  background-color: rgb(237, 247, 250);
+}
