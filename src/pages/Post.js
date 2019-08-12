@@ -1,28 +1,26 @@
 import React from "react";
-import axios from "axios";
 import PostCompon from "../components/Post";
+import { connect } from 'react-redux';
 
-export default class Post extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      post: null
-    }
-  }
-
+class Post extends React.Component {
   render () {
+    const post = this.props.posts.find(post => post.id == this.props.params.id);
+    if (post) {
+      post.username = this.props.users.find(user => user.id == post.userId).username;
+    }
     return (
       <div>
-        {this.state.post && <PostCompon {...this.state.post} />}
+        {post && <PostCompon {...post} />}
       </div>
     )
   }
-
-  componentDidMount() {
-    axios.get(`http://jsonplaceholder.typicode.com/posts/${this.props.params.id}`)
-    .then(response => {
-      this.setState({ post: response.data });
-    })
-  }
 }
+
+function mapStateToProps(state) {
+  return {
+    users: state.users.users,
+    posts: state.posts.posts
+  };
+}
+
+export default connect(mapStateToProps)(Post);

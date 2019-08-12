@@ -13,6 +13,11 @@ export default class Post extends React.Component {
         </div>
 
         <div className="card-body text-secondary">
+          <p>
+            <Link to={`/users/${this.props.userId}`}>
+              {this.props.username}
+            </Link>
+          </p>
           <p>{this.props.title}</p>
           <p>{this.props.body}</p>
         </div>

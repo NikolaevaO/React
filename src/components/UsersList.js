@@ -1,20 +1,13 @@
 import React from "react";
-import axios from "axios";
+import { connect } from 'react-redux';
 import User from "./User";
 
-export default class UsersList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: []
-    }
-  }
-
+class UsersList extends React.Component {
   render () {
-    if(!this.state.users) {
+    if(!this.props.users) {
       return null;
     }
-    const users = this.state.users.map(user => {
+    const users = this.props.users.map(user => {
       return <User key={user.id} {...user}/>
     })
 
@@ -25,10 +18,12 @@ export default class UsersList extends React.Component {
       </div>
     )
   }
-
-  componentDidMount() {
-    axios.get(`http://jsonplaceholder.typicode.com/users/`).then(response => {
-      this.setState({ users: response.data})
-    })
-  }
 }
+
+function mapStateToProps(state) {
+  return {
+    users: state.users.users
+  };
+}
+
+export default connect(mapStateToProps)(UsersList);

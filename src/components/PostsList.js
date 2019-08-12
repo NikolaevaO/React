@@ -1,23 +1,17 @@
 import React from "react";
-import axios from "axios";
+import { connect } from 'react-redux';
 import Post from "./Post";
 
-export default class PostsList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      posts: []
-    }
-  }
-
+class PostsList extends React.Component {
   render () {
-    if(!this.state.posts) {
+    if(!this.props.posts) {
       return null;
     }
-    const posts = this.state.posts.map(post => {
-      return <Post key={post.id} {...post}/>
-    })
-
+    const posts = this.props.posts.map(post => {
+      post.username = this.props.users.find(user => user.id == post.userId).username;
+      return <Post key={post.id} {...post} />
+    });
+    
     return (
       <div>
         <h1>Посты</h1>
@@ -25,10 +19,13 @@ export default class PostsList extends React.Component {
       </div>
     )
   }
-
-  componentDidMount() {
-    axios.get(`http://jsonplaceholder.typicode.com/posts/`).then(response => {
-      this.setState({ posts: response.data})
-    })
-  }
 }
+
+function mapStateToProps(state) {
+  return {
+    users: state.users.users,
+    posts: state.posts.posts
+  };
+}
+
+export default connect(mapStateToProps)(PostsList);

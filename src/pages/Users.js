@@ -4,7 +4,6 @@ import UsersList from "../components/UsersList";
 export default class Users extends React.Component {
   render () {
     return (
-      // <UsersList />
       <div>
         {
           (!this.props.children) ? (<UsersList />) : (this.props.children)

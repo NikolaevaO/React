@@ -13,6 +13,11 @@ export default class Comment extends React.Component {
         </div>
 
         <div className="card-body text-secondary">
+          <p>RE:&nbsp;
+            <Link to={`/posts/${this.props.postId}`}>
+              {this.props.title}
+            </Link>
+          </p>
           <p>{this.props.body}</p>
         </div>
       </div>

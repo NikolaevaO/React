@@ -1,20 +1,14 @@
 import React from "react";
-import axios from "axios";
 import Commment from "./Comment";
+import { connect } from 'react-redux';
 
-export default class CommentList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      comments: []
-    }
-  }
-
+class CommentList extends React.Component {
   render () {
-    if(!this.state.comments) {
+    if(!this.props.comments) {
       return null;
     }
-    const comments = this.state.comments.map(comment => {
+    const comments = this.props.comments.map(comment => {
+      comment.title = this.props.posts.find(post => post.id == comment.postId).title;
       return <Commment key={comment.id} {...comment} />
     })
 
@@ -25,10 +19,13 @@ export default class CommentList extends React.Component {
       </div>
     )
   }
-
-  componentDidMount() {
-    axios.get(`http://jsonplaceholder.typicode.com/comments/`).then(response => {
-      this.setState({ comments: response.data})
-    })
-  }
 }
+
+function mapStateToProps(state) {
+  return {
+    posts: state.posts.posts,
+    comments: state.comments.comments
+  };
+}
+
+export default connect(mapStateToProps)(CommentList);
