@@ -1,5 +1,5 @@
 import React from "react";
-import Commment from "./Comment";
+import Comment from "./Comment";
 import { connect } from 'react-redux';
 
 class CommentList extends React.Component {
@@ -9,7 +9,7 @@ class CommentList extends React.Component {
     }
     const comments = this.props.comments.map(comment => {
       comment.title = this.props.posts.find(post => post.id == comment.postId).title;
-      return <Commment key={comment.id} {...comment} />
+      return <Comment key={comment.id} {...comment} />
     })
 
     return (
