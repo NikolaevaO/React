@@ -1,31 +1,28 @@
-#root {
-  position: relative;
-  margin: 20px;
+.reply {
+  font-weight: 500;
+  color: black;
 }
 
-.modal {
-  position: absolute;
-  display: block;
-  background-color: rgb(250, 237, 220);
-  width: 20%;
-  height: 40%;
-  border: 1px solid grey;
+.avatar {
+  color: #fff;
+  width: 150px;
+  height: 150px;
+  border: 1px dotted rgb(40, 158, 40);
+  border-radius: 75px;
+  background-color: rgb(40, 158, 40);
+  line-height: 140px;
   text-align: center;
-  top: 0;
-  left: 35%;
+  font-size: 75px;
+  font-weight: bold;
+  margin: 0 auto;
 }
 
-.modal h2 {
-  padding-top: 45px;
+.userName {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 20px;
 }
 
-.modal button {
-  margin-top: 10%;
-  cursor: pointer;
-}
-
-.blog > div {
-  padding: 10px 25px;
-  border: 1px solid rgb(182, 180, 180);
-  background-color: rgb(237, 247, 250);
+.card-header {
+  font-size: 20px;
 }
